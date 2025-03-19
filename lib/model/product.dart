@@ -22,10 +22,7 @@ class Product {
     return Product(
       id: json['id'],
       title: json['title'],
-      price:
-          (json['price'] is int)
-              ? (json['price'] as int).toDouble()
-              : json['price'].toDouble(),
+      price: (json['price'] as num).toDouble(),
       description: json['description'],
       category: json['category'],
       image: json['image'],
@@ -41,12 +38,6 @@ class Rating {
   Rating({required this.rate, required this.count});
 
   factory Rating.fromJson(Map<String, dynamic> json) {
-    return Rating(
-      rate:
-          (json['rate'] is int)
-              ? (json['rate'] as int).toDouble()
-              : json['rate'].toDouble(),
-      count: json['count'],
-    );
+    return Rating(rate: (json['rate'] as num).toDouble(), count: json['count']);
   }
 }
