@@ -4,10 +4,24 @@ import 'BLoC/bLoc.dart';
 import 'BLoC/theme.dart';
 import 'repository/product_repository.dart';
 import 'screens/homeScreen.dart';
+import 'screens/coming_soon_screen.dart';
+import 'screens/product_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(BlocProvider(create: (context) => ThemeBloc(), child: const MyApp()));
+  final productRepository = ProductRepository();
+
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => ThemeBloc()),
+        BlocProvider(
+          create: (context) => ProductBloc(repository: productRepository),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -42,8 +56,8 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _screens = [
     const HomeScreen(),
-    // const CategoryScreen(),
-    // const ProfileScreen(),
+    const ComingSoonScreen(),
+    const ComingSoonScreen(),
   ];
 
   @override
@@ -65,6 +79,47 @@ class _MainScreenState extends State<MainScreen> {
           ),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
+      ),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Flutter Mid App'), centerTitle: true),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ComingSoonScreen(),
+                  ),
+                );
+              },
+              child: const Text('Coming Soon Screen'),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ProductScreen(),
+                  ),
+                );
+              },
+              child: const Text('Products Screen'),
+            ),
+          ],
+        ),
       ),
     );
   }
